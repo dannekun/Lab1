@@ -10,14 +10,30 @@
 <p th:text="'AccountID: ' + ${accountId} + '!'"></p>
 <p th:text="'Balance: ' + ${balanceId} + '!'"></p>
 
-<form action="#" th:action="@{/bank/withdraw?id={user}&balance={balance}(user=${userId}, balance=1)}" method="post">
-    <input type="text"  name="fname">
-    <input type="submit" value="Withdraw">
+<form>
+    <input type="text" id="wit">
+    <input onclick="withdraw()" type="button" value="Withdraw">
 </form>
-<form action="#" th:action="@{/bank/deposit?id={user}&balance={balance}(user=${userId}, balance=1)}" method="post">
-    <input type="text"  name="fname">
-    <input type="submit" value="Deposit">
+<form>
+    <input type="text" id="depo">
+    <input onclick="deposit()" type="button" value="Deposit">
 </form>
+
+<script>
+
+    function deposit(){
+        var depoVal = document.getElementById('depo').value;
+        window.location.href = '/bank/deposit?id=121&deposit='+ depoVal;
+    };
+
+    function withdraw(){
+        var witVal = document.getElementById('wit').value;
+        window.location.href = '/bank/withdraw?id=121&withdraw='+ witVal;
+    };
+
+
+
+</script>
 
 
 </body>

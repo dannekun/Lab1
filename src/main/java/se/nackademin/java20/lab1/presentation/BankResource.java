@@ -20,9 +20,10 @@ public class BankResource {
 
     @GetMapping("/account")
     public @ResponseBody
-    ModelAndView openAccount(@RequestParam long id, Model model) {
+    ModelAndView openAccount(@RequestParam String id, Model model) {
 
-        Optional<Person> p =  personRepository.findById(id);
+        long i = Long.valueOf(id);
+        Optional<Person> p =  personRepository.findById(i);
         model.addAttribute("userId", id);
         model.addAttribute("accountId", p.get().getName());
         model.addAttribute("balanceId", p.get().getBalance());
@@ -42,17 +43,11 @@ public class BankResource {
         return "Användare sparad!";
     }
 
-    @GetMapping("/bank/{userId}/account/")
-    public String bankForm(@PathVariable("userId") String userId, @PathVariable("accountId") Long accountId, Model model) {
-        model.addAttribute("userId", userId);
-        model.addAttribute("accountId", accountId);
-        return "bank";
-    }
 
-    @PostMapping(path = "/deposit")
-    public @ResponseBody ModelAndView depositMoney(@RequestParam String id, @RequestParam String balance, Model model){
+    @GetMapping(path = "/deposit")
+    public @ResponseBody ModelAndView depositMoney(@RequestParam String id, @RequestParam String deposit, Model model){
         long i = Long.valueOf(id);
-        int b = Integer.valueOf(balance);
+        int b = Integer.valueOf(deposit);
         Optional<Person> p =  personRepository.findById(i);
         p.get().deposit(b);
         Person per = p.get();
@@ -63,10 +58,10 @@ public class BankResource {
         return new ModelAndView("bank/account");
     }
 
-    @PostMapping(path = "/withdraw")
-    public @ResponseBody ModelAndView withdrawMoney(@RequestParam String id, @RequestParam String balance, Model model){
+    @GetMapping(path = "/withdraw")
+    public @ResponseBody ModelAndView withdrawMoney(@RequestParam String id, @RequestParam String withdraw, Model model){
         long i = Long.valueOf(id);
-        int b = Integer.valueOf(balance);
+        int b = Integer.valueOf(withdraw);
         Optional<Person> p =  personRepository.findById(i);
         p.get().withdraw(b);
         Person per = p.get();
