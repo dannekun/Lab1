@@ -1,7 +1,7 @@
 package se.nackademin.java20.lab1.Persistance.Repository;
 
 import org.springframework.data.repository.CrudRepository;
-import se.nackademin.java20.lab1.Persistance.model.Person;
+import se.nackademin.java20.lab1.Domain.Person;
 
 import java.util.Optional;
 
