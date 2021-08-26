@@ -1,12 +1,11 @@
-package se.nackademin.java20.lab1.presentation;
+package se.nackademin.java20.lab1.Presentation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import se.nackademin.java20.lab1.Persistance.Repository.PersonRepository;
-import se.nackademin.java20.lab1.Persistance.model.Person;
+import se.nackademin.java20.lab1.Domain.PersonRepository;
+import se.nackademin.java20.lab1.Domain.Person;
 
 import java.util.Optional;
 
@@ -17,6 +16,7 @@ public class BankResource {
     @Autowired
     PersonRepository personRepository;
     Person person;
+
 
     @GetMapping("/account")
     public @ResponseBody
@@ -33,37 +33,43 @@ public class BankResource {
     }
 
 
-    @PostMapping(path = "/add")
-    public @ResponseBody String saveAccount(@RequestParam long id, @RequestParam String name, @RequestParam int balance){
+    @PostMapping(path = "/create")
+    public @ResponseBody String saveAccount( @RequestParam String name, @RequestParam int balance){
 
-        person = new Person(id, name,balance);
+
+        if (!personRepository.findByName(name).isEmpty())
+            return "User Already exists";
+        else
+            person = new Person(name, balance);
         personRepository.save(person);
+        return   "User Saved!";
 
 
-        return "Användare sparad!";
+
     }
 
 
     @GetMapping(path = "/deposit")
     public @ResponseBody ModelAndView depositMoney(@RequestParam String id, @RequestParam String deposit, Model model){
-        long i = Long.valueOf(id);
-        int b = Integer.valueOf(deposit);
+        long i = Long.parseLong(id);
+        int b = Integer.parseInt(deposit);
         Optional<Person> p =  personRepository.findById(i);
         p.get().deposit(b);
-        Person per = p.get();
-        personRepository.save(per);
-        model.addAttribute("userId", id);
-        model.addAttribute("accountId", p.get().getName());
-        model.addAttribute("balanceId", p.get().getBalance());
-        return new ModelAndView("bank/account");
+        return getModelAndView(id, model, p);
     }
+
 
     @GetMapping(path = "/withdraw")
     public @ResponseBody ModelAndView withdrawMoney(@RequestParam String id, @RequestParam String withdraw, Model model){
-        long i = Long.valueOf(id);
-        int b = Integer.valueOf(withdraw);
+        long i = Long.parseLong(id);
+        int b = Integer.parseInt(withdraw);
         Optional<Person> p =  personRepository.findById(i);
         p.get().withdraw(b);
+        return getModelAndView(id, model, p);
+    }
+
+
+    private ModelAndView getModelAndView(@RequestParam String id, Model model, Optional<Person> p) {
         Person per = p.get();
         personRepository.save(per);
         model.addAttribute("userId", id);
@@ -71,7 +77,4 @@ public class BankResource {
         model.addAttribute("balanceId", p.get().getBalance());
         return new ModelAndView("bank/account");
     }
-
-
-
 }

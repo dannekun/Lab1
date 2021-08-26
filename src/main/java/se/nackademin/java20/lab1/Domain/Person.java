@@ -1,4 +1,4 @@
-package se.nackademin.java20.lab1.Persistance.model;
+package se.nackademin.java20.lab1.Domain;
 
 import javax.persistence.*;
 
@@ -15,6 +15,7 @@ public class Person {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "balance")
@@ -27,8 +28,7 @@ public class Person {
 
     }
 
-    public Person(long id, String name, int balance){
-        this.id = id;
+    public Person(String name, int balance){
         this.name = name;
         this.balance = balance;
     }
@@ -40,9 +40,6 @@ public class Person {
     public void deposit(int deposit){
         this.balance += deposit;
     }
-
-
-
 
     public long getId() {
         return id;

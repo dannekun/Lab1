@@ -1,14 +1,16 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>My bank</title>
+    <title th:text="${accountId.toUpperCase()} + 's Account'" ></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 
-<p th:text="'UserID: ' + ${userId} + '!'"></p>
+<p id ="ID" th:text="'UserID: ' + ${userId} + '!'"></p>
 <p th:text="'AccountID: ' + ${accountId} + '!'"></p>
 <p th:text="'Balance: ' + ${balanceId} + '!'"></p>
+<p th:value="${userId}" id="UserIDtag" ></p>
+
 
 <form>
     <input type="text" id="wit">
@@ -22,14 +24,23 @@
 <script>
 
     function deposit(){
+
+        let userId = document.getElementById('ID').value;
+
+        console.log(userId)
+
         var depoVal = document.getElementById('depo').value;
-        window.location.href = '/bank/deposit?id=121&deposit='+ depoVal;
-    };
+
+        window.location.href = '/bank/deposit?id=2&deposit='+ depoVal;
+    }
 
     function withdraw(){
+
+        let userId;
+
         var witVal = document.getElementById('wit').value;
-        window.location.href = '/bank/withdraw?id=121&withdraw='+ witVal;
-    };
+        window.location.href = '/bank/withdraw?id='+userId+'&withdraw='+ witVal;
+    }
 
 
 
