@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import se.nackademin.java20.lab1.Application.Serialize;
 import se.nackademin.java20.lab1.Domain.PersonRepository;
 import se.nackademin.java20.lab1.Domain.Person;
 
@@ -16,6 +17,7 @@ public class BankResource {
     @Autowired
     PersonRepository personRepository;
     Person person;
+
 
 
     @GetMapping("/account")
@@ -36,13 +38,19 @@ public class BankResource {
     @PostMapping(path = "/create")
     public @ResponseBody String saveAccount( @RequestParam String name, @RequestParam int balance){
 
+        Serialize serialize = new Serialize();
+
+        serialize.smashOrPass();
+
+       // System.out.println(smash);
+
 
         if (!personRepository.findByName(name).isEmpty())
             return "User Already exists";
         else
             person = new Person(name, balance);
         personRepository.save(person);
-        return   "User Saved!";
+        return   "User Saved!" ;
 
 
 
