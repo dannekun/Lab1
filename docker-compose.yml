@@ -5,13 +5,11 @@ services:
         environment:
             - MYSQL_ROOT_PASSWORD=password
             - MYSQL_DATABASE=lab1
+    lab2:
+        image: dannekun/bank:0.0.1
+        environment:
+            - MYSQL_HOST=mysql
         ports:
-            - "3307:3306"
-        lab2:
-            image: dannekun/bank:0.0.1
-            environment:
-                - MYSQL_HOST=mysql
-            ports:
-                - "8080:8080"
-            links:
-                - mysql
+            - "8080:8080"
+        links:
+            - mysql
