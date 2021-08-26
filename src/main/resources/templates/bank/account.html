@@ -9,7 +9,7 @@
 <p id ="ID" th:text="'UserID: ' + ${userId} + '!'"></p>
 <p th:text="'AccountID: ' + ${accountId} + '!'"></p>
 <p th:text="'Balance: ' + ${balanceId} + '!'"></p>
-<p th:value="${userId}" id="UserIDtag" ></p>
+<input th:value="${userId}" id="UserIDtag" type="hidden">
 
 
 <form>
@@ -23,20 +23,17 @@
 
 <script>
 
+
+
     function deposit(){
-
-        let userId = document.getElementById('ID').value;
-
-        console.log(userId)
-
+        var userId = document.getElementById('UserIDtag').value;
         var depoVal = document.getElementById('depo').value;
 
-        window.location.href = '/bank/deposit?id=2&deposit='+ depoVal;
+        window.location.href = '/bank/deposit?id='+ userId+'&deposit='+ depoVal;
     }
 
     function withdraw(){
-
-        let userId;
+        var userId = document.getElementById('UserIDtag').value;
 
         var witVal = document.getElementById('wit').value;
         window.location.href = '/bank/withdraw?id='+userId+'&withdraw='+ witVal;

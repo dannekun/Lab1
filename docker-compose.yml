@@ -8,7 +8,7 @@ services:
         ports:
             - "3307:3306"
         lab2:
-            image: salahabdinoor/bank:0.0.1
+            image: dannekun/bank:0.0.1
             environment:
                 - MYSQL_HOST=mysql
             ports:
