@@ -15,7 +15,7 @@ public class Serialize {
 
     String chosenUser = "1";
 
-    String URL = "http://localhost:8082/risk/1";
+    String URL = "http://localhost:8080/risk/1";
 
     public void smashOrPass(){
         try {
