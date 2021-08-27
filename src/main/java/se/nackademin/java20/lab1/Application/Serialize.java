@@ -13,16 +13,15 @@ public class Serialize {
 
     RestTemplate restTemplate = new RestTemplate();
 
+    Pass pass;
+
     String chosenUser = "1";
 
-    String URL = "http://localhost:8080/risk/1";
+    String URL = "http://localhost:8082/risk/1";
 
-    public void smashOrPass(){
-        try {
-            System.out.println(restTemplate.getForEntity(URL, Pass.class).getBody());
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+    public Boolean smashOrPass(String url, String userId){
+
+        return Boolean.parseBoolean(restTemplate.getForEntity("http://"+url+"/risk/"+ userId, Pass.class).getBody().getPass());
 
     }
 

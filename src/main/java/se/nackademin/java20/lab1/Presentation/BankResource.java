@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import se.nackademin.java20.lab1.Application.Serialize;
+import se.nackademin.java20.lab1.ApplicationConfiguration;
 import se.nackademin.java20.lab1.Domain.PersonRepository;
 import se.nackademin.java20.lab1.Domain.Person;
 
@@ -17,6 +18,9 @@ public class BankResource {
     @Autowired
     PersonRepository personRepository;
     Person person;
+
+    @Autowired
+    ApplicationConfiguration applicationConfiguration;
 
 
 
@@ -36,24 +40,36 @@ public class BankResource {
 
 
     @PostMapping(path = "/create")
-    public @ResponseBody String saveAccount( @RequestParam String name, @RequestParam int balance){
+    public @ResponseBody String saveAccount(@RequestParam String name, @RequestParam int balance){
 
         Serialize serialize = new Serialize();
 
-        serialize.smashOrPass();
-
-        //System.out.println(smash);
-
-
-        if (!personRepository.findByName(name).isEmpty())
-            return "User Already exists";
-        else
-            person = new Person(name, balance);
-        personRepository.save(person);
-        return   "User Saved!" ;
 
 
 
+       if (serialize.smashOrPass(applicationConfiguration.getHost(), name)){
+           if (!personRepository.findByName(name).isEmpty())
+               return "User Already exists";
+           else
+               person = new Person(name, balance);
+           personRepository.save(person);
+           return "User Saved!" ;
+       }else {
+           return "User cannot create account!";
+       }
+
+
+    }
+
+    @GetMapping(path = "/db")
+    public @ResponseBody String db(){
+        String x = "";
+        for (Person person12: personRepository.findAll()) {
+            x += "ID: "+ person12.getId()+" Name: "+
+            person12.getName()+ "\n";
+
+        }
+        return x;
     }
 
 
